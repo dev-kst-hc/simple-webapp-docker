@@ -1,0 +1,24 @@
+name: Build and Deploy to Rancher
+
+env:
+  DOCKER_USERNAME: ieielil
+  DOCKER_PASSWORD: @@rosalieamber##
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: |
+          docker build -t hc-ci-cd:latest .
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker push ieielil/hc-ci-cd:latest
