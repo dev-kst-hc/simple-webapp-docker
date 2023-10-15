@@ -21,4 +21,5 @@ jobs:
         run: |
           docker build -t hc-ci-cd:latest .
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker image tag hc-ci-cd:latest ieielil/hc-ci-cd:latest
           docker push ieielil/hc-ci-cd:latest
