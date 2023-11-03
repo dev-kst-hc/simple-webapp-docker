@@ -17,33 +17,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-<<<<<<< HEAD
       - name: Build Docker image ( hc-ci-cd:latest ) #Image Name that you created in docker
-=======
-      - name: Determine Version
-        id: semver
-        run: |
-          currentVersion="0.0.0"
-          commitMessage=$(git log -1 --pretty=%B)
-
-          if [[ $commitMessage =~ ^minor: ]]; then
-            currentVersion=$(npm version minor)
-          elif [[ $commitMessage =~ ^release: ]]; then
-            currentVersion=$(npm version patch)
-          elif [[ $commitMessage =~ ^major: ]]; then
-            currentVersion=$(npm version major)
-          fi
-
-          echo "Current Version: $currentVersion"
-
-      - name: Increment Git Tag
-        run: |
-          newTag=$(git describe --abbrev=0 --tags)
-          git tag -a $newTag -m "Version $newTag"
-          git push origin $newTag
-
-      - name: Build Docker image
->>>>>>> cc83ca5b72b1606edac8d0e3cd52ec7f361c4ff2
         run: |
           docker build -t hc-ci-cd:latest .
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
@@ -57,11 +31,12 @@ jobs:
           aws configure set default.region ap-southeast-1 # Set your AWS region
         env:
          AWS_DEFAULT_REGION: ap-southeast-1
-
-        - name: Create EKS Cluster
-          run: |
-          eksctl create cluster --name=eks-test --nodes=1 --region=ap-southeast-1 #--profile=kst-dev
         
+      - name: Create EKS Cluster
+        run: |
+          eksctl create cluster --name=eks-test --nodes=1 --region=ap-southeast-1 #--profile=kst-dev
+
+
       - name: Authenticate with EKS ( Authentication to eks cluster )
         run: aws eks update-kubeconfig --name eks-test
 
