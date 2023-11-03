@@ -24,16 +24,15 @@ jobs:
           currentVersion="0.0.0"
           commitMessage=$(git log -1 --pretty=%B)
 
-          if [[ $commitMessage =~ ^feat: ]]; then
+          if [[ $commitMessage =~ ^minor: ]]; then
             currentVersion=$(npm version minor)
-          elif [[ $commitMessage =~ ^fix: ]]; then
+          elif [[ $commitMessage =~ ^release: ]]; then
             currentVersion=$(npm version patch)
-          elif [[ $commitMessage =~ ^BREAKING CHANGE: ]]; then
+          elif [[ $commitMessage =~ ^major: ]]; then
             currentVersion=$(npm version major)
           fi
 
           echo "Current Version: $currentVersion"
-          echo "::set-output name=NEW_VERSION::$currentVersion"
 
       - name: Increment Git Tag
         run: |
