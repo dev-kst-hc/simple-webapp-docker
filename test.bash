@@ -2,7 +2,7 @@
 
 currentVersion="0.0.0"
 #commitMessage=$(git log -1 --pretty=%B)
-commitMessage=release:
+commitMessage=major:
 
 if [[ $commitMessage =~ ^release: ]]; then
   currentVersion=$(npm version minor)
