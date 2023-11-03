@@ -55,11 +55,14 @@ jobs:
 
       - name: Build Docker image ( hc-ci-cd:latest ) #Image Name that you created in docker
         run: |
-          #docker build -t hc-ci-cd:latest .
-          docker build -t ${IMAGE}:${{ steps.semver.outputs.new_tag }} .
+          docker build -t ${IMAGE}:latest .
+          #docker build -t ${IMAGE}:${{ steps.semver.outputs.new_tag }} .
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          docker image tag hc-ci-cd:latest ieielil/hc-ci-cd:latest
-          docker push ieielil/hc-ci-cd:latest
+          docker image tag ${IMAGE}:latest ieielil/${IMAGE}:latest
+          docker image tag ${IMAGE}:${{ steps.semver.outputs.new_tag }}
+          docker push ieielil/${IMAGE}:latest
+          docker push ieieilil/${IMAGE}:${{ steps.semver.outputs.new_tag }}
+          
 
       - name: Install eksctl
         run: |
