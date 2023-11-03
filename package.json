@@ -1,6 +1,6 @@
 {
   "name": "simple-webapp-docker",
-  "version": "1.1.0",
+  "version": "1.0.0",
   "description": "SIMPLE WEBAPP DOCKER",
   "main": "app.py",
   "scripts": {

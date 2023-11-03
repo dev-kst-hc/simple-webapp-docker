@@ -1,9 +1,8 @@
-name: Build, Tag, and Deploy to Rancher
+name: Basic CI/CD ( Pipeline )
 
 env:
-  DOCKER_USERNAME: ieielil
-  DOCKER_PASSWORD: '@@rosalieamber##'
-  IMAGE: hc-ci-cd
+  DOCKER_USERNAME: ieielil #DockerUsername
+  DOCKER_PASSWORD: '' #DockerPassword
 
 on:
   push:
@@ -18,33 +17,29 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Determine Version
-        id: semver
-        run: |
-          currentVersion="0.0.0"
-          commitMessage=$(git log -1 --pretty=%B)
-
-          if [[ $commitMessage =~ ^feat: ]]; then
-            currentVersion=$(npm version minor)
-          elif [[ $commitMessage =~ ^fix: ]]; then
-            currentVersion=$(npm version patch)
-          elif [[ $commitMessage =~ ^BREAKING CHANGE: ]]; then
-            currentVersion=$(npm version major)
-          fi
-
-          echo "Current Version: $currentVersion"
-          echo "::set-output name=NEW_VERSION::$currentVersion"
-
-      - name: Increment Git Tag
-        run: |
-          newTag=$(git describe --abbrev=0 --tags)
-          git tag -a $newTag -m "Version $newTag"
-          git push origin $newTag
-
-      - name: Build Docker image
+      - name: Build Docker image ( hc-ci-cd:latest ) #Image Name that you created in docker
         run: |
           docker build -t hc-ci-cd:latest .
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
           docker image tag hc-ci-cd:latest ieielil/hc-ci-cd:latest
           docker push ieielil/hc-ci-cd:latest
 
+      - name: Configure AWS credentials
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} #Replace with your access key id
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} #Replace with your access key
+          aws configure set default.region ap-southeast-1 # Set your AWS region
+        env:
+         AWS_DEFAULT_REGION: ap-southeast-1
+
+        - name: Create EKS Cluster
+          run: |
+          eksctl create cluster --name=eks-test --nodes=1 --region=ap-southeast-1 #--profile=kst-dev
+        
+      - name: Authenticate with EKS ( Authentication to eks cluster )
+        run: aws eks update-kubeconfig --name eks-test
+
+      - name: Deploy to EKS ( Deploying simple python app )
+        run: | 
+          kubectl apply -f k8s/deployment.yaml
+          kubectl rollout restart deploy/ci-cd-hc-app

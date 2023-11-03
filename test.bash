@@ -1,6 +1,6 @@
 #!/bin/bash
 
-currentVersion="0.0.0"
+#currentVersion="0.0.0"
 #commitMessage=$(git log -1 --pretty=%B)
 commitMessage='release'
 
