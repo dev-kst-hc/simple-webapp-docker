@@ -20,6 +20,9 @@ jobs:
       - name: Determine Version
         id: semver
         run: |
+          git config --global user.email "kcithu.96@gmail.com"
+          git config --global user.name "dev-kst-hc"
+          #git remote set-url origin https://dev-kst-hc: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@github.com/dev-kst-hc/simple-webapp-docker.git
           currentVersion="0.0.0"
           commitMessage=$(git log -1 --pretty=%B)
           echo "Commit Message: $commitMessage"
