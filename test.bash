@@ -13,6 +13,6 @@ elif [[ $commitMessage =~ ^major: ]]; then
 fi
 
 echo "Current Version: $currentVersion"
-# Optionally, you can set this value as an environment variable or use it in further commands.
+# # Optionally, you can set this value as an environment variable or use it in further commands.
 export NEW_VERSION=$currentVersion
 
