@@ -17,6 +17,28 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Determine Version
+        id: semver
+        run: |
+          currentVersion="0.0.0"
+          commitMessage=$(git log -1 --pretty=%B)
+          echo "Commit Message: $commitMessage"
+
+          if [[ $commitMessage =~ ^minor: ]]; then
+             currentVersion=$(npm version minor)
+             echo "Incrementing minor version."
+          elif [[ $commitMessage =~ ^patch: ]]; then
+             currentVersion=$(npm version patch)
+             echo "Incrementing patch version."
+          elif [[ $commitMessage =~ ^major: ]]; then
+             currentVersion=$(npm version major)
+             echo "Incrementing major version."
+          fi
+
+          echo "Current Version: $currentVersion"
+          echo "::set-output name=NEW_VERSION::$currentVersion"
+
+
       - name: Build Docker image ( hc-ci-cd:latest ) #Image Name that you created in docker
         run: |
           docker build -t hc-ci-cd:latest .
