@@ -39,8 +39,8 @@ jobs:
           fi
 
           echo "Current Version: $currentVersion"
-          echo "::set-output name=NEW_VERSION::$currentVersion"
-          git tag -a "v$currentVersion" -m "Version $currentVersion"
+          #echo "::set-output name=NEW_VERSION::$currentVersion"
+          git tag -a "test" -m "Version $currentVersion"
 
 
       - name: Build Docker image ( hc-ci-cd:latest ) #Image Name that you created in docker
