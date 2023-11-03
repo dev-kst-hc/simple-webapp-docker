@@ -40,11 +40,13 @@ jobs:
 
           echo "Current Version: $currentVersion"
           echo "::set-output name=NEW_VERSION::$currentVersion"
+          git tag -a "v$currentVersion" -m "Version $currentVersion"
 
 
       - name: Build Docker image ( hc-ci-cd:latest ) #Image Name that you created in docker
         run: |
-          docker build -t hc-ci-cd:latest .
+          #docker build -t hc-ci-cd:latest .
+          docker build -t ${image}:$ .
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
           docker image tag hc-ci-cd:latest ieielil/hc-ci-cd:latest
           docker push ieielil/hc-ci-cd:latest
