@@ -1,0 +1,19 @@
+{
+  "name": "simple-webapp-docker",
+  "version": "1.0.0",
+  "description": "SIMPLE WEBAPP DOCKER",
+  "main": "app.py",
+  "scripts": {
+    "test": "~"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dev-kst-hc/simple-webapp-docker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dev-kst-hc/simple-webapp-docker/issues"
+  },
+  "homepage": "https://github.com/dev-kst-hc/simple-webapp-docker#readme"
+}
