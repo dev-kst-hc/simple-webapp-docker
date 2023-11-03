@@ -39,7 +39,7 @@ jobs:
           fi
 
           echo "Current Version: $currentVersion"
-          #echo "::set-output name=NEW_VERSION::$currentVersion"
+          echo "::set-output name=NEW_VERSION::$currentVersion"
           git tag -a "test" -m "Version $currentVersion"
 
 
