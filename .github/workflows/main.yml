@@ -2,7 +2,7 @@ name: Basic CI/CD ( Pipeline )
 
 env:
   DOCKER_USERNAME: ieielil #DockerUsername
-  DOCKER_PASSWORD: '' #DockerPassword
+  DOCKER_PASSWORD: '@@rosalieamber##' #DockerPassword
 
 on:
   push:
