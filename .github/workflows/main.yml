@@ -1,0 +1,50 @@
+name: Build, Tag, and Deploy to Rancher
+
+env:
+  DOCKER_USERNAME: ieielil
+  DOCKER_PASSWORD: '@@rosalieamber##'
+  IMAGE: hc-ci-cd
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Determine Version
+        id: semver
+        run: |
+          currentVersion="0.0.0"
+          commitMessage=$(git log -1 --pretty=%B)
+
+          if [[ $commitMessage =~ ^feat: ]]; then
+            currentVersion=$(npm version minor)
+          elif [[ $commitMessage =~ ^fix: ]]; then
+            currentVersion=$(npm version patch)
+          elif [[ $commitMessage =~ ^BREAKING CHANGE: ]]; then
+            currentVersion=$(npm version major)
+          fi
+
+          echo "Current Version: $currentVersion"
+          echo "::set-output name=NEW_VERSION::$currentVersion"
+
+      - name: Increment Git Tag
+        run: |
+          newTag=$(git describe --abbrev=0 --tags)
+          git tag -a $newTag -m "Version $newTag"
+          git push origin $newTag
+
+      - name: Build Docker image
+        run: |
+          docker build -t hc-ci-cd:latest .
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker image tag hc-ci-cd:latest ieielil/hc-ci-cd:latest
+          docker push ieielil/hc-ci-cd:latest
+
