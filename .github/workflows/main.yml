@@ -40,6 +40,9 @@ jobs:
 
           echo "Current Version: $currentVersion"
           echo "::set-output name=new_tag::$currentVersion"
+          git add package.json
+          git commit -m "Bump version to package.json" --allow-empty'
+          git push origin main
           #git tag -a "test" -m "Version $currentVersion"
 
       - name: Create Git Tag
