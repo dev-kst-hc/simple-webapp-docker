@@ -55,3 +55,4 @@ jobs:
         run: | 
           kubectl apply -f k8s/deployment.yaml
           kubectl rollout restart deploy/ci-cd-hc-app
+          kubectl get nodes -o wide
