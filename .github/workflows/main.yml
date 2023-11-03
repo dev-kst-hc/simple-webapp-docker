@@ -44,7 +44,7 @@ jobs:
           git add package.json
           git commit -m "Bump version to package.json" --allow-empty
           git push origin main
-          git push origin ${{ steps.semver.outputs.new_tag }}
+          #git push origin ${{ steps.semver.outputs.new_tag }}
           #git tag -a "test" -m "Version $currentVersion"
 
       - name: Create Git Tag
@@ -52,9 +52,6 @@ jobs:
         run: git push origin ${{ steps.semver.outputs.new_tag }}
         env:
           GITHUB_TOKEN: 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
-
-
-
 
 
       - name: Build Docker image ( hc-ci-cd:latest ) #Image Name that you created in docker
