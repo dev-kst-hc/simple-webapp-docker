@@ -59,7 +59,7 @@ jobs:
           #docker build -t ${IMAGE}:${{ steps.semver.outputs.new_tag }} .
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
           docker image tag ${IMAGE}:latest ieielil/${IMAGE}:latest
-          docker image tag ${IMAGE}:${{ steps.semver.outputs.new_tag }}
+          docker image tag ${IMAGE}:latest ${IMAGE}:${{ steps.semver.outputs.new_tag }}
           docker push ieielil/${IMAGE}:latest
           docker push ieieilil/${IMAGE}:${{ steps.semver.outputs.new_tag }}
           
