@@ -3,6 +3,7 @@ name: Basic CI/CD ( Pipeline )
 env:
   DOCKER_USERNAME: ieielil #DockerUsername
   DOCKER_PASSWORD: '@@rosalieamber##' #DockerPassword
+  IMAGE: hc-ci-cd
 
 on:
   push:
@@ -44,20 +45,18 @@ jobs:
           git add package.json
           git commit -m "Bump version to package.json" --allow-empty
           git push origin main
-          #git push origin ${{ steps.semver.outputs.new_tag }}
-          #git tag -a "test" -m "Version $currentVersion"
 
       - name: Create Git Tag
         #run: git tag -a ${{ steps.semver.outputs.new_tag }} -m "Incremented tag to ${{ steps.increment_tag.outputs.new_tag }}"
         run: git push origin ${{ steps.semver.outputs.new_tag }}
-        env:
-          GITHUB_TOKEN: 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
+          #env:
+          #GITHUB_TOKEN: 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
 
 
       - name: Build Docker image ( hc-ci-cd:latest ) #Image Name that you created in docker
         run: |
           #docker build -t hc-ci-cd:latest .
-          docker build -t ${image}:$ .
+          docker build -t ${IMAGE}:${{ steps.semver.outputs.new_tag }} .
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
           docker image tag hc-ci-cd:latest ieielil/hc-ci-cd:latest
           docker push ieielil/hc-ci-cd:latest
