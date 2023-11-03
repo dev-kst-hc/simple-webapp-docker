@@ -61,7 +61,7 @@ jobs:
           docker image tag ${IMAGE}:latest ieielil/${IMAGE}:latest
           docker image tag ${IMAGE}:latest ieielil/${IMAGE}:${{ steps.semver.outputs.new_tag }}
           docker push ieielil/${IMAGE}:latest
-          docker push ieieiil/${IMAGE}:${{ steps.semver.outputs.new_tag }}
+          docker push ieielil/${IMAGE}:${{ steps.semver.outputs.new_tag }}
           
 
       - name: Install eksctl
