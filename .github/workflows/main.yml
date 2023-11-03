@@ -39,8 +39,16 @@ jobs:
           fi
 
           echo "Current Version: $currentVersion"
-          echo "::set-output name=NEW_VERSION::$currentVersion"
-          git tag -a "test" -m "Version $currentVersion"
+          echo "::set-output name=new_tag::$currentVersion"
+          #git tag -a "test" -m "Version $currentVersion"
+
+      - name: Create Git Tag
+        run: git tag -a ${{ steps.semver.outputs.new_tag }} -m "Incremented tag to ${{ steps.increment_tag.outputs.new_tag }}"
+        env:
+          GITHUB_TOKEN: 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
+
+
+
 
 
       - name: Build Docker image ( hc-ci-cd:latest ) #Image Name that you created in docker
